@@ -51,6 +51,14 @@ namespace CleanArchMvc.Domain.Tests
                 .NotThrow<CleanArchMvc.Domain.Validation.DomainExceptionValidation>();
         }
 
+        [Fact]
+        public void CreateCategory_WithNullimageNameValue_NoNullReferenceException()
+        {
+            Action action = () => new Product(1, "Product Name", "Product Description", 9.99m, 99, null);
+            action.Should()
+                .NotThrow<NullReferenceException>();
+        }
+
         [Theory]
         [InlineData(-5)]
         public void CreateProduct_InvalidStockValue_ExceptionDomainNegativeValue(int value)
