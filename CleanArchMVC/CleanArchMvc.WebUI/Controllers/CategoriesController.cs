@@ -90,5 +90,18 @@ namespace CleanArchMvc.WebUI.Controllers
             await _categoryService.Remove(id);
             return RedirectToAction(nameof(Index));
         }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+
+            if (id == null) return NotFound();
+
+            var category = await _categoryService.GetById(id);
+
+            if (category == null) return NotFound();
+
+            return View(category);
+        }
+
     }
 }
