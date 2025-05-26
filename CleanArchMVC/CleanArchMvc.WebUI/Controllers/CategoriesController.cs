@@ -43,11 +43,11 @@ namespace CleanArchMvc.WebUI.Controllers
 
             if (id == null) return NotFound();
 
-            var categoryVM = await _categoryService.GetById(id);
+            var category = await _categoryService.GetById(id);
 
-            if (categoryVM == null) return NotFound();
+            if (category == null) return NotFound();
 
-            return View(categoryVM);
+            return View(category);
         }
 
         [HttpPost]
@@ -69,6 +69,26 @@ namespace CleanArchMvc.WebUI.Controllers
                 return RedirectToAction(nameof(Index)); 
             }
             return View(category);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int? id)
+        {
+
+            if (id == null) return NotFound();
+
+            var category = await _categoryService.GetById(id);
+
+            if (category == null) return NotFound();
+
+            return View(category);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            await _categoryService.Remove(id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
