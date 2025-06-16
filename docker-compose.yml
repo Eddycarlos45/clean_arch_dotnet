@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server
+    container_name: sqlserver_container
+    hostname: sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "1q2w3e4r@#$"
+      MSSQL_PID: "Developer"
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql_data:/var/opt/mssql
+    restart: unless-stopped
+    networks:
+      - mssqlnet
+
+  initdb:
+    image: mcr.microsoft.com/mssql-tools
+    container_name: sqlserver_initdb
+    depends_on:
+      - sqlserver
+    entrypoint: >
+      /bin/bash -c "
+        echo 'Aguardando o SQL Server iniciar...';
+        until /opt/mssql-tools/bin/sqlcmd -S sqlserver,1433 -U sa -P '1q2w3e4r@#$' -Q 'SELECT 1' > /dev/null 2>&1;
+        do
+          echo 'Esperando SQL Server...'; sleep 2;
+        done;
+        echo 'Criando o banco curso_clean_arch...';
+        /opt/mssql-tools/bin/sqlcmd -S sqlserver,1433 -U sa -P '1q2w3e4r@#$' -i /init.sql;
+        echo 'Banco criado com sucesso!';
+      "
+    volumes:
+      - ./init.sql:/init.sql
+    networks:
+      - mssqlnet
+
+volumes:
+  mssql_data:
+
+networks:
+  mssqlnet:
+    driver: bridge

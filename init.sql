@@ -1,0 +1,1 @@
+CREATE DATABASE curso_clean_arch;
