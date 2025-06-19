@@ -1,0 +1,28 @@
+root = true
+
+[*.cs]
+# Severidade padrão
+dotnet_analyzer_diagnostic.severity = warning
+
+# Estilo de código
+dotnet_sort_system_directives_first = true
+csharp_using_directive_placement = inside_namespace
+
+# Regras de design
+#dotnet_diagnostic.CA1001.severity = error     # IDisposable sem Dispose
+dotnet_diagnostic.CA1822.severity = warning   # Métodos podem ser static
+dotnet_diagnostic.CA1801.severity = suggestion # Parâmetros não utilizados
+
+# Boas práticas
+dotnet_diagnostic.CA1303.severity = none      # Localização opcional
+dotnet_diagnostic.CA1707.severity = none      # Permitir _ em nomes
+
+# Performance
+dotnet_diagnostic.CA1825.severity = warning   # Use Array.Empty<T>()
+
+# Segurança
+dotnet_diagnostic.CA2100.severity = error     # SQL Injection
+
+# Nome do projeto (opcional por IDEs)
+[*.{csproj}]
+charset = utf-8
