@@ -30,7 +30,7 @@ jobs:
       working-directory: ./CleanArchMVC
 
     - name: Build (com Roslyn Analyzers)
-      run: dotnet build --no-restore -warnaserror
+      run: dotnet build -warnaserror
       working-directory: ./CleanArchMVC
       env: 
         DB_USER: ${{secrets.DB_USER}}
