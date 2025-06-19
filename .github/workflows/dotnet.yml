@@ -15,6 +15,10 @@ jobs:
 
     - name: Start SQL
       run: docker compose up -d
+      env:
+        DB_USER: ${{secrets.DB_USER}}
+        DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+        DB_NAME: ${{secrets.DB_NAME}}
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
@@ -28,6 +32,10 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
       working-directory: ./CleanArchMVC
+      env: 
+        DB_USER: ${{secrets.DB_USER}}
+        DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+        DB_NAME: ${{secrets.DB_NAME}}
       
     - name: Test
       run: dotnet test --no-build --verbosity normal

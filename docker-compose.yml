@@ -7,7 +7,9 @@ services:
     hostname: sqlserver
     environment:
       ACCEPT_EULA: "Y"
-      MSSQL_SA_PASSWORD: "1q2w3e4r@#$"
+      MSSQL_PASSWORD: "${DB_PASSWORD}"
+      MSSQL_USER: "${DB_USER}"
+      MSSQL_DB_NAME: "${DB_NAME}"
       MSSQL_PID: "Developer"
     ports:
       - "1433:1433"
@@ -25,12 +27,12 @@ services:
     entrypoint: >
       /bin/bash -c "
         echo 'Aguardando o SQL Server iniciar...';
-        until /opt/mssql-tools/bin/sqlcmd -S sqlserver,1433 -U sa -P '1q2w3e4r@#$' -Q 'SELECT 1' > /dev/null 2>&1;
+        until /opt/mssql-tools/bin/sqlcmd -S sqlserver,1433 -U '${DB_USER}' -P '${DB_PASSWORD}' -Q 'SELECT 1' > /dev/null 2>&1;
         do
           echo 'Esperando SQL Server...'; sleep 2;
         done;
         echo 'Criando o banco curso_clean_arch...';
-        /opt/mssql-tools/bin/sqlcmd -S sqlserver,1433 -U sa -P '1q2w3e4r@#$' -i /init.sql;
+        /opt/mssql-tools/bin/sqlcmd -S sqlserver,1433 -U sa -P '${DB_PASSWORD}' -i /init.sql;
         echo 'Banco criado com sucesso!';
       "
     volumes:
